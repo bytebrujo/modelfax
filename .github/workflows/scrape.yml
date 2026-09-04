@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.SCRAPE_PAT || secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
