@@ -25,3 +25,23 @@ files themselves.
 ## Learned rules (append-only, date each entry, newest last)
 
 <!-- The agent appends operational lessons here as it maintains the repo. -->
+
+- 2026-09-04 — Branch protection on this account requires a **public** repo
+  (free plan: `POST /repos/.../rulesets` returns 403 "Upgrade to GitHub Pro or
+  make this repository public"). GitHub Pages has the same constraint. The repo
+  was therefore made public during Phase 1 rather than Phase 4; Phase 4's
+  remaining work is announcing it, not flipping visibility. The active ruleset
+  on `main` requires a pull request and the `make check` status check, with no
+  bypass actors — that includes the repo owner, so _every_ change lands via PR.
+- 2026-09-04 — `platform.openai.com/docs/*` now 301s to
+  `developers.openai.com/api/docs/*`, and Anthropic's docs moved from
+  `docs.anthropic.com` to `platform.claude.com`. Provider `sources` record the
+  post-redirect URLs; a scraper that follows a 301 on every run is wasting a
+  round trip and hiding drift. Re-verify source URLs before writing a parser
+  (build spec §12), never trust a remembered URL.
+- 2026-09-04 — Data PRs opened with the default `GITHUB_TOKEN` do **not**
+  trigger `pull_request` workflows, so CI would never run and the PR could
+  never satisfy the required status check. `scrape.yml` reads a `SCRAPE_PAT`
+  secret and falls back to `GITHUB_TOKEN`; until that secret exists, the daily
+  scrape can open a PR but it will sit unmergeable. Set the secret before
+  relying on the cron.
