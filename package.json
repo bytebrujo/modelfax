@@ -1,0 +1,21 @@
+{
+  "name": "modelfax",
+  "version": "0.1.0",
+  "description": "Machine-readable registry of AI model pricing, context windows, and lifecycle dates. Static site + JSON API.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "check": "make check"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "cheerio": "^1.0.0",
+    "eslint": "^10.0.0",
+    "prettier": "^3.0.0"
+  }
+}

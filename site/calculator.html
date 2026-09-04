@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cost calculator — modelfax</title>
+    <meta
+      name="description"
+      content="Estimate the cost of a request across every AI model in the modelfax registry from input and output token counts."
+    />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1><a href="./">modelfax</a></h1>
+      <nav aria-label="Primary">
+        <a href="./">Models</a>
+        <a href="calculator.html" aria-current="page">Cost calculator</a>
+        <a href="https://github.com/bytebrujo/modelfax">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <p class="lede">
+        Type token counts, get the cost per model, cheapest first. This page does not tokenize text;
+        bring your own counts from your provider's usage response.
+      </p>
+
+      <noscript>
+        <p class="notice">
+          The calculator needs JavaScript. The prices it uses are in
+          <a href="data/openai.json">openai.json</a>,
+          <a href="data/anthropic.json">anthropic.json</a>, and
+          <a href="data/google.json">google.json</a>.
+        </p>
+      </noscript>
+
+      <form class="controls" id="calc" aria-label="Token counts">
+        <div class="field">
+          <label for="c-input">Input tokens</label>
+          <input
+            id="c-input"
+            name="input"
+            type="number"
+            min="0"
+            step="1"
+            value="10000"
+            inputmode="numeric"
+          />
+        </div>
+        <div class="field">
+          <label for="c-output">Output tokens</label>
+          <input
+            id="c-output"
+            name="output"
+            type="number"
+            min="0"
+            step="1"
+            value="1000"
+            inputmode="numeric"
+          />
+        </div>
+        <div class="field">
+          <label for="c-requests">Requests</label>
+          <input
+            id="c-requests"
+            name="requests"
+            type="number"
+            min="1"
+            step="1"
+            value="1"
+            inputmode="numeric"
+          />
+        </div>
+        <div class="field check">
+          <input id="c-include-inactive" name="inactive" type="checkbox" />
+          <label for="c-include-inactive">Include deprecated and retired models</label>
+        </div>
+      </form>
+
+      <p class="status" id="status" role="status" aria-live="polite">Loading data…</p>
+
+      <div class="table-wrap">
+        <table id="costs">
+          <caption class="visually-hidden">
+            Estimated cost per model, cheapest first
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Provider</th>
+              <th scope="col">Model</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="num">Input cost</th>
+              <th scope="col" class="num">Output cost</th>
+              <th scope="col" class="num">Total</th>
+              <th scope="col" class="num">Total (batch)</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Costs use standard (non-cached) input pricing. Batch total uses provider batch prices where
+        published. Models without a price are omitted.
+      </p>
+    </footer>
+
+    <script src="site.js"></script>
+  </body>
+</html>

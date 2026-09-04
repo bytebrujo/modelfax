@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>modelfax — AI model pricing &amp; lifecycle registry</title>
+    <meta
+      name="description"
+      content="Machine-readable registry of AI model pricing, context windows, and deprecation dates across OpenAI, Anthropic, and Google. Free JSON API."
+    />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1><a href="./">modelfax</a></h1>
+      <nav aria-label="Primary">
+        <a href="./" aria-current="page">Models</a>
+        <a href="calculator.html">Cost calculator</a>
+        <a href="https://github.com/bytebrujo/modelfax">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <p class="lede">
+        Pricing, context windows, and lifecycle dates for AI models, read from provider
+        documentation and re-checked daily. Everything here is also a JSON file:
+        <code>data/openai.json</code>, <code>data/anthropic.json</code>,
+        <code>data/google.json</code>, validated against
+        <a href="schema/model.schema.json"><code>schema/model.schema.json</code></a
+        >.
+      </p>
+
+      <noscript>
+        <p class="notice">
+          This table is rendered from the JSON data files with JavaScript. Without it, read the data
+          directly: <a href="data/openai.json">openai.json</a>,
+          <a href="data/anthropic.json">anthropic.json</a>,
+          <a href="data/google.json">google.json</a>.
+        </p>
+      </noscript>
+
+      <form class="controls" id="filters" aria-label="Filter models">
+        <div class="field">
+          <label for="f-provider">Provider</label>
+          <select id="f-provider" name="provider">
+            <option value="">All</option>
+            <option value="openai">OpenAI</option>
+            <option value="anthropic">Anthropic</option>
+            <option value="google">Google</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-status">Status</label>
+          <select id="f-status" name="status">
+            <option value="">All</option>
+            <option value="announced">Announced</option>
+            <option value="available" selected>Available</option>
+            <option value="deprecated">Deprecated</option>
+            <option value="retired">Retired</option>
+          </select>
+        </div>
+        <div class="field grow">
+          <label for="f-search">Search</label>
+          <input
+            id="f-search"
+            name="q"
+            type="search"
+            placeholder="model id or name"
+            autocomplete="off"
+          />
+        </div>
+      </form>
+
+      <p class="status" id="status" role="status" aria-live="polite">Loading data…</p>
+
+      <div class="table-wrap">
+        <table id="models">
+          <caption class="visually-hidden">
+            AI models with pricing and lifecycle dates
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col"><button type="button" data-sort="provider">Provider</button></th>
+              <th scope="col"><button type="button" data-sort="display_name">Model</button></th>
+              <th scope="col"><button type="button" data-sort="status">Status</button></th>
+              <th scope="col" class="num">
+                <button type="button" data-sort="input">Input $/MTok</button>
+              </th>
+              <th scope="col" class="num">
+                <button type="button" data-sort="output">Output $/MTok</button>
+              </th>
+              <th scope="col" class="num">
+                <button type="button" data-sort="cached">Cached $/MTok</button>
+              </th>
+              <th scope="col" class="num">
+                <button type="button" data-sort="context_window">Context</button>
+              </th>
+              <th scope="col"><button type="button" data-sort="deprecated">Deprecated</button></th>
+              <th scope="col"><button type="button" data-sort="retired">Retired</button></th>
+              <th scope="col"><button type="button" data-sort="last_verified">Verified</button></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Code MIT, data CC-BY-4.0. Prices are USD per million tokens as published by each provider;
+        always confirm against the linked source before relying on them.
+      </p>
+    </footer>
+
+    <script src="site.js"></script>
+  </body>
+</html>

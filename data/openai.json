@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "models": [
+    {
+      "id": "openai:gpt-5.6-sol",
+      "provider": "openai",
+      "model_id": "gpt-5.6-sol",
+      "display_name": "GPT-5.6 Sol",
+      "family": "gpt",
+      "status": "available",
+      "modalities": { "input": ["text", "image"], "output": ["text"] },
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 4.0,
+        "output_per_mtok": 20.0,
+        "cached_input_per_mtok": 0.4,
+        "batch_input_per_mtok": 2.0,
+        "batch_output_per_mtok": 10.0
+      },
+      "dates": { "released": null, "deprecated": null, "retired": null },
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Batch prices are 50% of standard. Provider lists promotional pricing through 2026-11-21."
+    },
+    {
+      "id": "openai:gpt-5.6-luna",
+      "provider": "openai",
+      "model_id": "gpt-5.6-luna",
+      "display_name": "GPT-5.6 Luna",
+      "family": "gpt",
+      "status": "available",
+      "modalities": { "input": ["text", "image"], "output": ["text"] },
+      "context_window": 1050000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 0.2,
+        "output_per_mtok": 1.2,
+        "cached_input_per_mtok": 0.02,
+        "batch_input_per_mtok": 0.1,
+        "batch_output_per_mtok": 0.6
+      },
+      "dates": { "released": null, "deprecated": null, "retired": null },
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models/gpt-5.6-luna"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Prompts over 272K input tokens are billed at 2x input and 1.5x output for the full request. Batch prices are 50% of standard."
+    },
+    {
+      "id": "openai:gpt-5",
+      "provider": "openai",
+      "model_id": "gpt-5",
+      "display_name": "GPT-5",
+      "family": "gpt",
+      "status": "deprecated",
+      "modalities": { "input": ["text", "image"], "output": ["text"] },
+      "context_window": 400000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 1.25,
+        "output_per_mtok": 10.0,
+        "cached_input_per_mtok": 0.125,
+        "batch_input_per_mtok": 0.625,
+        "batch_output_per_mtok": 5.0
+      },
+      "dates": { "released": "2025-08-07", "deprecated": "2026-06-11", "retired": null },
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models/gpt-5",
+        "https://developers.openai.com/api/docs/deprecations"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Snapshot gpt-5-2025-08-07 announced deprecated 2026-06-11 with shutdown 2026-12-11; recommended replacement gpt-5.6-sol/terra/luna."
+    }
+  ]
+}

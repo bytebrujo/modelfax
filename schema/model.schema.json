@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bytebrujo.github.io/modelfax/schema/model.schema.json",
+  "title": "modelfax provider data file",
+  "description": "One file per provider. `schema_version` must equal the const below; bumping it follows build spec §4.4.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "models"],
+  "properties": {
+    "schema_version": {
+      "description": "Echo of the schema's own version. Additive schema changes bump minor; breaking changes bump major.",
+      "const": "1.0.0"
+    },
+    "models": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/model" }
+    }
+  },
+  "$defs": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "nullableDate": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "nullableNonNegativeNumber": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "modality": {
+      "type": "string",
+      "enum": ["text", "image", "audio", "video"]
+    },
+    "modalities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input", "output"],
+      "properties": {
+        "input": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/modality" }
+        },
+        "output": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/modality" }
+        }
+      }
+    },
+    "pricing": {
+      "description": "All prices are USD per million tokens. Null only when status is announced or retired.",
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "input_per_mtok",
+        "output_per_mtok",
+        "cached_input_per_mtok",
+        "batch_input_per_mtok",
+        "batch_output_per_mtok"
+      ],
+      "properties": {
+        "currency": { "const": "USD" },
+        "input_per_mtok": { "$ref": "#/$defs/nonNegativeNumber" },
+        "output_per_mtok": { "$ref": "#/$defs/nonNegativeNumber" },
+        "cached_input_per_mtok": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "batch_input_per_mtok": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "batch_output_per_mtok": { "$ref": "#/$defs/nullableNonNegativeNumber" }
+      }
+    },
+    "dates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["released", "deprecated", "retired"],
+      "properties": {
+        "released": { "$ref": "#/$defs/nullableDate" },
+        "deprecated": { "$ref": "#/$defs/nullableDate" },
+        "retired": { "$ref": "#/$defs/nullableDate" }
+      }
+    },
+    "source": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "provider",
+        "model_id",
+        "display_name",
+        "family",
+        "status",
+        "modalities",
+        "context_window",
+        "max_output_tokens",
+        "pricing",
+        "dates",
+        "sources",
+        "last_verified"
+      ],
+      "properties": {
+        "id": {
+          "description": "\"<provider>:<model_id>\", globally unique across all data files.",
+          "type": "string",
+          "pattern": "^(openai|anthropic|google):[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["openai", "anthropic", "google"]
+        },
+        "model_id": {
+          "description": "The exact model string accepted by the provider's API.",
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "display_name": { "type": "string", "minLength": 1 },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["announced", "available", "deprecated", "retired"]
+        },
+        "modalities": { "$ref": "#/$defs/modalities" },
+        "context_window": {
+          "description": "Maximum input context, in tokens.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_output_tokens": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "pricing": { "$ref": "#/$defs/pricing" },
+        "dates": { "$ref": "#/$defs/dates" },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/source" }
+        },
+        "last_verified": { "$ref": "#/$defs/date" },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["available", "deprecated"] } } },
+          "then": { "properties": { "pricing": { "type": "object" } } }
+        }
+      ]
+    }
+  }
+}
