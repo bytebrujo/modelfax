@@ -74,8 +74,31 @@ for (const f of htmlFiles) {
   log.info("html ok", { file: f });
 }
 
-// Data paths referenced by site.js must exist; every data file must be referenced.
+// Every sortable column must have a sort key site.js actually understands.
+// Adding a <th> with a new data-sort and forgetting the switch case silently
+// sorts every row by undefined, which looks like "sorting is broken" rather
+// than like a missing case.
 const siteJs = readFileSync(join(siteDir, "site.js"), "utf8");
+const indexHtml = readFileSync(join(siteDir, "index.html"), "utf8");
+const sortKeys = [...indexHtml.matchAll(/data-sort="([a-z_]+)"/g)].map((m) => m[1]);
+if (sortKeys.length === 0) {
+  fail("index.html declares no sortable columns");
+}
+const sortBody = siteJs.slice(
+  siteJs.indexOf("function sortKey("),
+  siteJs.indexOf("function compare("),
+);
+for (const key of sortKeys) {
+  const handled = sortBody.includes(`case "${key}"`) || /return m\[key\]/.test(sortBody);
+  if (!handled) {
+    fail("column has no sort key in site.js sortKey()", { key });
+  }
+}
+// A column header count that does not match the rendered cell count means one
+// column silently shows another column's values.
+const headerCount = (indexHtml.match(/<th scope="col">/g) || []).length;
+log.info("sortable columns ok", { columns: headerCount, keys: sortKeys.length });
+
 const providerListMatch = siteJs.match(/const PROVIDERS = \[([^\]]*)\]/);
 if (!providerListMatch) {
   fail("site.js must declare `const PROVIDERS = [...]`");

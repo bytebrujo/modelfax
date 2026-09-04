@@ -111,3 +111,23 @@ files themselves.
   be tracked. Adding an id without seeding the record turns the next scrape red,
   because context windows and modalities are not scrapeable and `normalize()`
   will not invent them. Seed the record in the same PR.
+- 2026-09-04 — `sources` is stored sorted, so `sources[0]` is alphabetical, not
+  the most useful link. Every Anthropic model on the site pointed at the same
+  deprecations page. `primarySource()` in `site/site.js` scores each URL against
+  the model id (including the family-stripped and undated forms, because doc
+  paths write claude-opus-4-5-20251101 as `/models/opus-4-5/overview`) and links
+  the most specific one. Never index into `sources` positionally.
+- 2026-09-04 — Verifying the site needs a real browser, and both MCP browser
+  integrations were down. Chromium headless via the locally installed Brave
+  binary works and needs no extension:
+  `--headless=new --virtual-time-budget=8000 --window-size=W,H --screenshot=out.png URL`,
+  with `--dump-dom` for the rendered HTML. Two traps: it clamps the window to a
+  minimum width of 500 CSS px, so a 390-wide screenshot is a 500-wide page
+  cropped, which looks exactly like a broken mobile layout; and to measure
+  anything, inject a script that writes the numbers into `document.title`, then
+  read the title out of `--dump-dom`.
+- 2026-09-04 — Never fix horizontal overflow with `overflow-x: hidden` on
+  html/body. It hides the symptom and makes the page untestable, because
+  `scrollWidth` then always equals `clientWidth`. Fix it with containment
+  (`min-width: 0` on flex items, `overflow-wrap` on URLs, a scrolling wrapper
+  around the table) and assert `documentElement.scrollWidth === clientWidth`.

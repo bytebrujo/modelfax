@@ -79,8 +79,46 @@
     return el("span", { class: `badge ${status}`, text: status });
   }
 
+  /* `sources` is stored sorted, so its first entry is alphabetical rather than
+     useful: every Anthropic model linked to the same deprecations page. Score
+     each URL and link the one that is actually about this model. */
+  function primarySource(m) {
+    const sources = m.sources || [];
+    if (!sources.length) {
+      return null;
+    }
+    const id = m.model_id.toLowerCase();
+    const undated = id.replace(/-\d{8}$/, "");
+    const needles = new Set();
+    for (const base of [id, undated]) {
+      needles.add(base);
+      needles.add(base.replace(/\./g, "-"));
+      // Provider doc paths usually drop the family prefix: claude-opus-4-5
+      // lives at /models/opus-4-5/overview.
+      needles.add(base.replace(/^[a-z]+-/, ""));
+      needles.add(base.replace(/^[a-z]+-/, "").replace(/\./g, "-"));
+    }
+    let best = sources[0];
+    let bestScore = -1;
+    for (const url of sources) {
+      const lower = url.toLowerCase();
+      let score = lower.split("/").length;
+      for (const needle of needles) {
+        if (needle.length > 2 && lower.includes(needle)) {
+          score += 100;
+          break;
+        }
+      }
+      if (score > bestScore) {
+        best = url;
+        bestScore = score;
+      }
+    }
+    return best;
+  }
+
   function modelCell(m) {
-    const src = m.sources && m.sources.length ? m.sources[0] : null;
+    const src = primarySource(m);
     const name = src
       ? el("a", { href: src, rel: "noopener", text: m.display_name })
       : el("span", { text: m.display_name });
@@ -97,6 +135,8 @@
         return price(m, "output_per_mtok");
       case "cached":
         return price(m, "cached_input_per_mtok");
+      case "released":
+        return m.dates.released;
       case "deprecated":
         return m.dates.deprecated;
       case "retired":
@@ -148,6 +188,7 @@
             el("td", { class: "num", text: fmtPrice(price(m, "output_per_mtok")) }),
             el("td", { class: "num", text: fmtPrice(price(m, "cached_input_per_mtok")) }),
             el("td", { class: "num", text: int.format(m.context_window) }),
+            el("td", { text: fmtDate(m.dates.released) }),
             el("td", { text: fmtDate(m.dates.deprecated) }),
             el("td", { text: fmtDate(m.dates.retired) }),
             el("td", { text: m.last_verified }),

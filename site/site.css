@@ -56,6 +56,8 @@ a {
 code {
   font-family: var(--mono);
   font-size: 0.9em;
+  /* File paths and URLs have no spaces to break at. */
+  overflow-wrap: anywhere;
 }
 
 :focus-visible {
@@ -105,6 +107,9 @@ code {
 
 main {
   flex: 1;
+  /* A flex item defaults to min-width:auto, which lets a wide table stretch its
+     parent instead of scrolling inside .table-wrap. */
+  min-width: 0;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -114,6 +119,7 @@ main {
 .lede {
   color: var(--muted);
   max-width: 70ch;
+  overflow-wrap: anywhere;
 }
 
 .notice {
@@ -128,6 +134,7 @@ main {
   gap: 1rem;
   align-items: flex-end;
   margin: 1rem 0;
+  max-width: 100%;
 }
 
 .field {
@@ -160,6 +167,9 @@ select {
   background: var(--bg);
   color: var(--fg);
   min-width: 9rem;
+  max-width: 100%;
+  /* iOS zooms the page when a control's text is under 16px. */
+  font-size: max(1rem, 16px);
 }
 
 input[type="checkbox"] {
@@ -176,6 +186,9 @@ input[type="checkbox"] {
 
 .table-wrap {
   overflow-x: auto;
+  max-width: 100%;
+  /* Momentum scrolling on touch, and a hint that there is more to the right. */
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--line);
   border-radius: 6px;
 }
@@ -289,5 +302,22 @@ td.model .id {
   th,
   td {
     padding: 0.4rem 0.5rem;
+  }
+
+  .site-header {
+    padding: 0.75rem 1rem;
+  }
+
+  main {
+    padding: 0.75rem 1rem 1.5rem;
+  }
+
+  .field.grow {
+    flex-basis: 100%;
+  }
+
+  /* Fingertip-sized sort targets. */
+  thead button {
+    padding: 0.35rem 0;
   }
 }
