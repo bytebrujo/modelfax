@@ -52,7 +52,11 @@ export function normalizeRecords(provider, merged, existing, opts = {}) {
       display_name: p.display_name ?? old.display_name ?? modelId,
       family: p.family ?? old.family ?? provider,
       status,
-      modalities: p.modalities ?? old.modalities ?? { input: ["text"], output: ["text"] },
+      // Deliberately no default. No provider publishes modalities in a shape
+      // worth scraping, so they come from the existing record. A brand-new model
+      // therefore has none, and schema validation rejects the file by name
+      // rather than quietly asserting it is a text-only model.
+      modalities: p.modalities ?? old.modalities,
       context_window: p.context_window ?? old.context_window,
       max_output_tokens: p.max_output_tokens ?? old.max_output_tokens ?? null,
       pricing: normalizePricing(p.pricing !== undefined ? p.pricing : old.pricing),

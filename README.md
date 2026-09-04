@@ -74,6 +74,20 @@ Field reference:
   script, and are announced in `AGENTS.md`.
 - `schema_version` in each data file always equals the `const` in the schema.
 
+### Coverage
+
+Each provider module declares the model ids the registry covers. Upstream pages
+list many more, including image, video and embedding models that have no
+per-token price and do not fit this schema. A model that appears on a provider's
+pricing or models page without being covered is reported by the scraper as an
+untracked model rather than being recorded with missing fields, and widening
+coverage is a deliberate change. Open an issue or a PR if a model you need is
+missing.
+
+Context windows, max output tokens and modalities are only published in a
+scrapeable table by one of the three providers, so those three fields are
+maintained by hand and everything else is scraped.
+
 ### Update cadence
 
 A scheduled job scrapes every provider daily at 06:00 UTC. Changes are opened as

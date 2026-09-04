@@ -2,13 +2,98 @@
   "schema_version": "1.0.0",
   "models": [
     {
+      "id": "google:gemini-2.0-flash",
+      "provider": "google",
+      "model_id": "gemini-2.0-flash",
+      "display_name": "Gemini 2.0 Flash",
+      "family": "gemini",
+      "status": "retired",
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1048576,
+      "max_output_tokens": 8192,
+      "pricing": null,
+      "dates": {
+        "released": "2025-02-05",
+        "deprecated": null,
+        "retired": "2026-06-01"
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/deprecations",
+        "https://ai.google.dev/gemini-api/docs/models"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Shut down 2026-06-01; provider's recommended replacement is gemini-3.6-flash. Deprecation announcement date is not published on the deprecations page."
+    },
+    {
+      "id": "google:gemini-2.5-pro",
+      "provider": "google",
+      "model_id": "gemini-2.5-pro",
+      "display_name": "Gemini 2.5 Pro",
+      "family": "gemini",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1048576,
+      "max_output_tokens": 65536,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 1.25,
+        "output_per_mtok": 10,
+        "cached_input_per_mtok": 0.125,
+        "batch_input_per_mtok": 0.625,
+        "batch_output_per_mtok": 5
+      },
+      "dates": {
+        "released": "2025-06-17",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/deprecations",
+        "https://ai.google.dev/gemini-api/docs/models",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2-5-pro",
+        "https://ai.google.dev/gemini-api/docs/pricing"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Prices shown are the <=200K-token prompt tier. Prompts over 200K tokens: $2.50 input / $15.00 output per MTok. No shutdown date announced."
+    },
+    {
       "id": "google:gemini-3.8-flash",
       "provider": "google",
       "model_id": "gemini-3.8-flash",
       "display_name": "Gemini 3.8 Flash",
       "family": "gemini",
       "status": "available",
-      "modalities": { "input": ["text", "image", "audio", "video"], "output": ["text"] },
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output": [
+          "text"
+        ]
+      },
       "context_window": 1048576,
       "max_output_tokens": 65536,
       "pricing": {
@@ -19,56 +104,18 @@
         "batch_input_per_mtok": 0.375,
         "batch_output_per_mtok": 1.875
       },
-      "dates": { "released": null, "deprecated": null, "retired": null },
+      "dates": {
+        "released": "2026-09-02",
+        "deprecated": null,
+        "retired": null
+      },
       "sources": [
-        "https://ai.google.dev/gemini-api/docs/pricing",
-        "https://ai.google.dev/gemini-api/docs/models"
+        "https://ai.google.dev/gemini-api/docs/deprecations",
+        "https://ai.google.dev/gemini-api/docs/models",
+        "https://ai.google.dev/gemini-api/docs/pricing"
       ],
       "last_verified": "2026-09-04",
       "notes": "Paid tier. Provider states these prices apply through 2026-12-31 and double on 2027-01-01."
-    },
-    {
-      "id": "google:gemini-2.5-pro",
-      "provider": "google",
-      "model_id": "gemini-2.5-pro",
-      "display_name": "Gemini 2.5 Pro",
-      "family": "gemini",
-      "status": "available",
-      "modalities": { "input": ["text", "image", "audio", "video"], "output": ["text"] },
-      "context_window": 1048576,
-      "max_output_tokens": 65536,
-      "pricing": {
-        "currency": "USD",
-        "input_per_mtok": 1.25,
-        "output_per_mtok": 10.0,
-        "cached_input_per_mtok": 0.125,
-        "batch_input_per_mtok": 0.625,
-        "batch_output_per_mtok": 5.0
-      },
-      "dates": { "released": "2025-06-17", "deprecated": null, "retired": null },
-      "sources": [
-        "https://ai.google.dev/gemini-api/docs/pricing",
-        "https://ai.google.dev/gemini-api/docs/models/gemini-2-5-pro",
-        "https://ai.google.dev/gemini-api/docs/deprecations"
-      ],
-      "last_verified": "2026-09-04",
-      "notes": "Prices shown are the <=200K-token prompt tier. Prompts over 200K tokens: $2.50 input / $15.00 output per MTok. No shutdown date announced."
-    },
-    {
-      "id": "google:gemini-2.0-flash",
-      "provider": "google",
-      "model_id": "gemini-2.0-flash",
-      "display_name": "Gemini 2.0 Flash",
-      "family": "gemini",
-      "status": "retired",
-      "modalities": { "input": ["text", "image", "audio", "video"], "output": ["text"] },
-      "context_window": 1048576,
-      "max_output_tokens": 8192,
-      "pricing": null,
-      "dates": { "released": "2025-02-05", "deprecated": null, "retired": "2026-06-01" },
-      "sources": ["https://ai.google.dev/gemini-api/docs/deprecations"],
-      "last_verified": "2026-09-04",
-      "notes": "Shut down 2026-06-01; provider's recommended replacement is gemini-3.6-flash. Deprecation announcement date is not published on the deprecations page."
     }
   ]
 }

@@ -52,3 +52,32 @@ files themselves.
   Namespace is ever unavailable, set `NAMESPACE_RUNNER` to `ubuntu-latest`
   rather than editing the workflows. The job _name_ (`make check`) is what
   branch protection matches on, so it must not change when the runner does.
+- 2026-09-04 — Provider pages carry invisible characters that break an exact
+  header match: Anthropic's model table appends a private-use icon glyph
+  (U+E08F) to every row label, and OpenAI's deprecation dates use non-breaking
+  hyphens (U+2011). `clean()` in `scrapers/lib/parse.js` strips private-use and
+  zero-width characters and normalizes hyphen-like dashes. Compare header text
+  only through `clean()`; never against a raw `.text()`.
+- 2026-09-04 — Not every table marks its header cells with `th`. Google's
+  deprecation tables use `td` inside `thead`. `headers()` handles that; do not
+  reach for `find("thead th")` directly.
+- 2026-09-04 — Each provider module exports `tracked`, the model ids this
+  registry covers, because upstream pages list far more models than the registry
+  carries (Google's pricing page alone lists ~46 others, including image, video
+  and embedding models that have no per-token price). A model outside `tracked`
+  is reported by run.js as `untracked models on a catalog page`, never
+  half-populated. Widening coverage means adding the id to `tracked` **and**
+  seeding a record, because context windows and modalities are not scraped.
+- 2026-09-04 — Only Anthropic publishes context windows in a scrapeable table.
+  OpenAI and Google publish them only on per-model pages, which would mean one
+  source and one fixture per model, so `context_window`, `max_output_tokens` and
+  `modalities` are carried forward from the existing record. `normalize()`
+  deliberately has no default for them: a brand-new model with none fails schema
+  validation by name rather than being silently recorded as text-only.
+- 2026-09-04 — `make scrape-dry` compares fixture-derived output against
+  `data/`, so the two must agree. After changing a fixture or a parser, run
+  `node scrapers/run.js --offline` to re-derive `data/` before `make check`.
+- 2026-09-04 — `last_verified` is excluded from the diff, so a run that confirms
+  nothing changed does not open a PR. To stop records looking stale anyway,
+  run.js re-stamps any record older than 30 days even with no field change,
+  which stays inside the 45-day staleness warning in `test/data.test.js`.

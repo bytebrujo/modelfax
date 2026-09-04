@@ -12,6 +12,7 @@ import { logger } from "./lib/log.js";
 import { ParseError, FetchError, EXIT } from "./lib/errors.js";
 import { fetchText } from "./lib/fetch.js";
 import { mergePartials, MergeConflict } from "./lib/merge.js";
+import { aliasIndex, applyTracking } from "./lib/tracked.js";
 import { normalizeRecords } from "./lib/normalize.js";
 import { diffRecords, hasChanges } from "./lib/diff.js";
 import {
@@ -25,6 +26,11 @@ import {
 const PROVIDERS_DIR = join(REPO_ROOT, "scrapers", "providers");
 const FIXTURES_DIR = join(REPO_ROOT, "fixtures");
 const log = logger("run");
+
+// A record whose last_verified is older than this gets re-stamped on the next
+// run even when no field changed. Comfortably inside the 45-day staleness
+// warning in test/data.test.js.
+const STALE_REFRESH_DAYS = 30;
 
 function parseArgs(argv) {
   const args = { provider: null, checkOnly: false, offline: false };
@@ -118,12 +124,37 @@ async function runProvider(mod, args, validate) {
     }
     for (const r of records) {
       r.sources = [...new Set([...(r.sources ?? []), source.url])];
+      // Kept off the record itself; used only to report where an untracked model
+      // was seen, then stripped before merging.
+      r._kind = source.kind;
+      r._catalog = source.catalog === true;
     }
     log.info("parsed source", { provider, kind: source.kind, records: records.length });
     partials.push(...records);
   }
 
-  const merged = mergePartials(partials);
+  // Fold aliases into canonical ids and drop models this registry does not cover.
+  const index = aliasIndex(mod.tracked);
+  const { kept, untracked } = applyTracking(partials, index);
+
+  // A model that shows up on a catalog page (pricing, models) but is not tracked
+  // is a coverage gap worth acting on. One that only shows up on a deprecations
+  // page is almost always a product we never carried, so it is not reported.
+  const catalogKinds = new Set(mod.sources.filter((s) => s.catalog).map((s) => s.kind));
+  const newModels = [...untracked.entries()]
+    .filter(([, kinds]) => [...kinds].some((k) => catalogKinds.has(k)))
+    .map(([id]) => id)
+    .sort();
+  if (newModels.length) {
+    log.warn("untracked models on a catalog page", {
+      provider,
+      count: newModels.length,
+      models: newModels,
+      action: "add to `tracked` in the provider module and seed a record, or leave uncovered",
+    });
+  }
+
+  const merged = mergePartials(kept.map(({ _kind, _catalog, ...rest }) => rest));
   const { path, doc } = readExisting(provider);
   const next = normalizeRecords(provider, merged, doc.models);
   const nextDoc = { schema_version: schemaVersion(), models: next };
@@ -140,7 +171,26 @@ async function runProvider(mod, args, validate) {
   }
 
   const diff = diffRecords(doc.models, next);
-  const changed = hasChanges(diff);
+
+  // `last_verified` is excluded from the diff so that a run which confirms
+  // nothing changed does not open a PR every single day. But a record that is
+  // re-read daily and never rewritten would drift toward looking stale, and the
+  // 45-day staleness check in test/data.test.js would eventually fire on data
+  // that is in fact current. Re-stamping once a record passes this threshold
+  // keeps both properties: quiet most days, never falsely stale.
+  const staleBefore = new Date(Date.now() - STALE_REFRESH_DAYS * 86_400_000)
+    .toISOString()
+    .slice(0, 10);
+  const stale = doc.models.filter((m) => m.last_verified < staleBefore).map((m) => m.model_id);
+  if (stale.length) {
+    log.info("refreshing last_verified past the threshold", {
+      provider,
+      days: STALE_REFRESH_DAYS,
+      models: stale,
+    });
+  }
+
+  const changed = hasChanges(diff) || stale.length > 0;
   log.info("diff", {
     provider,
     added: diff.added,
@@ -156,7 +206,7 @@ async function runProvider(mod, args, validate) {
     writeFileSync(path, JSON.stringify(nextDoc, null, 2) + "\n");
     log.info("wrote data file", { provider, path: basename(path), models: next.length });
   }
-  return { provider, skipped: false, changed, diff };
+  return { provider, skipped: false, changed, diff, untracked: newModels };
 }
 
 async function main() {

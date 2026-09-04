@@ -1,4 +1,13 @@
 node_modules/
 _site/
-fixtures/
 package-lock.json
+
+# Saved upstream pages. Never hand-edited, and reformatting them would destroy
+# their value as faithful snapshots.
+fixtures/*/*.html
+
+# Machine-written by scrapers/run.js with JSON.stringify(doc, null, 2). Prettier
+# formats JSON differently (it collapses short arrays), so running both would
+# make every scrape produce a diff that CI then rejects. The writer owns this
+# formatting; the schema and test/data.test.js own the contents.
+data/
