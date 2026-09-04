@@ -106,3 +106,8 @@ files themselves.
   above were found by executing that step and are fixed. It will fire on the
   next genuine upstream change, or by the 30-day `last_verified` re-stamp at the
   latest.
+- 2026-09-04 — Coverage is a closed loop, enforced by a test: every id in a
+  provider's `tracked` list must have a record in `data/`, and every record must
+  be tracked. Adding an id without seeding the record turns the next scrape red,
+  because context windows and modalities are not scrapeable and `normalize()`
+  will not invent them. Seed the record in the same PR.

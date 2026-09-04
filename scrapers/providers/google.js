@@ -36,7 +36,13 @@ export const sources = [
 
 export const tracked = [
   { model_id: "gemini-3.8-flash" },
+  { model_id: "gemini-3.7-flash" },
+  { model_id: "gemini-3.6-flash" },
+  { model_id: "gemini-3.5-flash" },
+  { model_id: "gemini-3.5-flash-lite" },
   { model_id: "gemini-2.5-pro" },
+  { model_id: "gemini-2.5-flash" },
+  { model_id: "gemini-2.5-flash-lite" },
   { model_id: "gemini-2.0-flash" },
 ];
 

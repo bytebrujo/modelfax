@@ -2,6 +2,45 @@
   "schema_version": "1.0.0",
   "models": [
     {
+      "id": "anthropic:claude-fable-5",
+      "provider": "anthropic",
+      "model_id": "claude-fable-5",
+      "display_name": "Claude Fable 5",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 10,
+        "output_per_mtok": 50,
+        "cached_input_per_mtok": 1,
+        "batch_input_per_mtok": 5,
+        "batch_output_per_mtok": 25
+      },
+      "dates": {
+        "released": "2026-06-09",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/fable-5/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Retirement committed not sooner than 2027-06-09. Cache reads are the usual 10% of base input, unlike Claude Fable 5.1."
+    },
+    {
       "id": "anthropic:claude-fable-5-1",
       "provider": "anthropic",
       "model_id": "claude-fable-5-1",
@@ -28,14 +67,15 @@
         "batch_output_per_mtok": 25
       },
       "dates": {
-        "released": null,
+        "released": "2026-09-01",
         "deprecated": null,
         "retired": null
       },
       "sources": [
         "https://platform.claude.com/docs/en/about-claude/model-deprecations",
         "https://platform.claude.com/docs/en/about-claude/models/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/fable-5-1/overview"
       ],
       "last_verified": "2026-09-04",
       "notes": "Retirement committed not sooner than 2027-09-01. Cache reads are 2.5% of base input on this model, not the usual 10%."
@@ -74,10 +114,167 @@
       "sources": [
         "https://platform.claude.com/docs/en/about-claude/model-deprecations",
         "https://platform.claude.com/docs/en/about-claude/models/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/haiku-4-5/overview"
       ],
       "last_verified": "2026-09-04",
       "notes": "Alias claude-haiku-4-5 resolves to this snapshot. Retirement committed not sooner than 2026-10-15."
+    },
+    {
+      "id": "anthropic:claude-opus-4-5-20251101",
+      "provider": "anthropic",
+      "model_id": "claude-opus-4-5-20251101",
+      "display_name": "Claude Opus 4.5",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 200000,
+      "max_output_tokens": 64000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 5,
+        "output_per_mtok": 25,
+        "cached_input_per_mtok": 0.5,
+        "batch_input_per_mtok": 2.5,
+        "batch_output_per_mtok": 12.5
+      },
+      "dates": {
+        "released": "2025-11-24",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/opus-4-5/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Alias claude-opus-4-5 resolves to this snapshot. Retirement committed not sooner than 2026-11-24."
+    },
+    {
+      "id": "anthropic:claude-opus-4-6",
+      "provider": "anthropic",
+      "model_id": "claude-opus-4-6",
+      "display_name": "Claude Opus 4.6",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 5,
+        "output_per_mtok": 25,
+        "cached_input_per_mtok": 0.5,
+        "batch_input_per_mtok": 2.5,
+        "batch_output_per_mtok": 12.5
+      },
+      "dates": {
+        "released": "2026-02-05",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/opus-4-6/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Retirement committed not sooner than 2027-02-05."
+    },
+    {
+      "id": "anthropic:claude-opus-4-7",
+      "provider": "anthropic",
+      "model_id": "claude-opus-4-7",
+      "display_name": "Claude Opus 4.7",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 5,
+        "output_per_mtok": 25,
+        "cached_input_per_mtok": 0.5,
+        "batch_input_per_mtok": 2.5,
+        "batch_output_per_mtok": 12.5
+      },
+      "dates": {
+        "released": "2026-04-16",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/opus-4-7/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Retirement committed not sooner than 2027-04-16. First model on the current tokenizer, which produces about 30% more tokens for the same text than earlier models."
+    },
+    {
+      "id": "anthropic:claude-opus-4-8",
+      "provider": "anthropic",
+      "model_id": "claude-opus-4-8",
+      "display_name": "Claude Opus 4.8",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 5,
+        "output_per_mtok": 25,
+        "cached_input_per_mtok": 0.5,
+        "batch_input_per_mtok": 2.5,
+        "batch_output_per_mtok": 12.5
+      },
+      "dates": {
+        "released": "2026-05-28",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/opus-4-8/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Retirement committed not sooner than 2027-05-28. Supports 300K output tokens on the Batch API with a beta header."
     },
     {
       "id": "anthropic:claude-opus-5",
@@ -106,17 +303,96 @@
         "batch_output_per_mtok": 12.5
       },
       "dates": {
-        "released": null,
+        "released": "2026-07-24",
         "deprecated": null,
         "retired": null
       },
       "sources": [
         "https://platform.claude.com/docs/en/about-claude/model-deprecations",
         "https://platform.claude.com/docs/en/about-claude/models/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/opus-5/overview"
       ],
       "last_verified": "2026-09-04",
       "notes": "Retirement committed not sooner than 2027-07-24. cached_input_per_mtok is the cache-read (hit) price; 5m/1h cache writes cost 1.25x/2x base input."
+    },
+    {
+      "id": "anthropic:claude-sonnet-4-5-20250929",
+      "provider": "anthropic",
+      "model_id": "claude-sonnet-4-5-20250929",
+      "display_name": "Claude Sonnet 4.5",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 200000,
+      "max_output_tokens": 64000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 3,
+        "output_per_mtok": 15,
+        "cached_input_per_mtok": 0.3,
+        "batch_input_per_mtok": 1.5,
+        "batch_output_per_mtok": 7.5
+      },
+      "dates": {
+        "released": "2025-09-29",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/sonnet-4-5/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Alias claude-sonnet-4-5 resolves to this snapshot. Retirement committed not sooner than 2026-09-29."
+    },
+    {
+      "id": "anthropic:claude-sonnet-4-6",
+      "provider": "anthropic",
+      "model_id": "claude-sonnet-4-6",
+      "display_name": "Claude Sonnet 4.6",
+      "family": "claude",
+      "status": "available",
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "pricing": {
+        "currency": "USD",
+        "input_per_mtok": 3,
+        "output_per_mtok": 15,
+        "cached_input_per_mtok": 0.3,
+        "batch_input_per_mtok": 1.5,
+        "batch_output_per_mtok": 7.5
+      },
+      "dates": {
+        "released": "2026-02-17",
+        "deprecated": null,
+        "retired": null
+      },
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/sonnet-4-6/overview"
+      ],
+      "last_verified": "2026-09-04",
+      "notes": "Legacy. Retirement committed not sooner than 2027-02-17."
     },
     {
       "id": "anthropic:claude-sonnet-5",
@@ -145,14 +421,15 @@
         "batch_output_per_mtok": 5
       },
       "dates": {
-        "released": null,
+        "released": "2026-06-30",
         "deprecated": null,
         "retired": null
       },
       "sources": [
         "https://platform.claude.com/docs/en/about-claude/model-deprecations",
         "https://platform.claude.com/docs/en/about-claude/models/overview",
-        "https://platform.claude.com/docs/en/about-claude/pricing"
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/sonnet-5/overview"
       ],
       "last_verified": "2026-09-04",
       "notes": "Retirement committed not sooner than 2027-06-30. Introductory $2/$10 pricing was made permanent; the planned 2026-09-01 increase was cancelled."

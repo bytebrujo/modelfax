@@ -52,8 +52,15 @@ export const sources = [
 // run.js as an untracked model rather than silently dropped or half-populated.
 export const tracked = [
   { model_id: "claude-fable-5-1" },
+  { model_id: "claude-fable-5" },
   { model_id: "claude-opus-5" },
+  { model_id: "claude-opus-4-8" },
+  { model_id: "claude-opus-4-7" },
+  { model_id: "claude-opus-4-6" },
+  { model_id: "claude-opus-4-5-20251101", aliases: ["claude-opus-4-5"] },
   { model_id: "claude-sonnet-5" },
+  { model_id: "claude-sonnet-4-6" },
+  { model_id: "claude-sonnet-4-5-20250929", aliases: ["claude-sonnet-4-5"] },
   { model_id: "claude-haiku-4-5-20251001", aliases: ["claude-haiku-4-5"] },
 ];
 
