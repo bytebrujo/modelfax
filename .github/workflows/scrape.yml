@@ -63,12 +63,20 @@ jobs:
 
       - name: Open data PR
         if: steps.scrape.outputs.exit == '3'
-        env:
-          DATE: ${{ github.run_started_at }}
         run: |
           set -euo pipefail
-          day="${DATE%%T*}"
+          # Compute the date here rather than from github.run_started_at, which
+          # arrives empty in this context and silently produced branch names
+          # like "data/-1234567890".
+          day=$(date -u +%F)
           providers=$(git diff --name-only -- data | sed -E 's#data/(.*)\.json#\1#' | paste -sd, -)
+          # Exit 3 means the scraper wrote a file. If git disagrees there is
+          # nothing to open a PR about, and committing would fail; say so and
+          # stop rather than failing the run.
+          if [ -z "$providers" ]; then
+            echo '{"level":"warn","component":"scrape.yml","msg":"scraper reported changes but git sees none in data/"}'
+            exit 0
+          fi
           branch="data/${day}-${{ github.run_id }}"
           git config user.name "modelfax-bot"
           git config user.email "modelfax-bot@users.noreply.github.com"
