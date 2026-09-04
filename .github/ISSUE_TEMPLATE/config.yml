@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How the data is produced
+    url: https://github.com/bytebrujo/modelfax/blob/main/CONTRIBUTING.md
+    about: Where each field comes from, and which ones the scrapers own.
