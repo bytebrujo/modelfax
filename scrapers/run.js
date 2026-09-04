@@ -33,7 +33,7 @@ const log = logger("run");
 const STALE_REFRESH_DAYS = 30;
 
 function parseArgs(argv) {
-  const args = { provider: null, checkOnly: false, offline: false };
+  const args = { provider: null, checkOnly: false, offline: false, refresh: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--provider") {
@@ -42,6 +42,14 @@ function parseArgs(argv) {
       args.checkOnly = true;
     } else if (a === "--offline") {
       args.offline = true;
+    } else if (a === "--refresh") {
+      // Re-stamp last_verified on every record even when no field changed.
+      // The daily run deliberately stays quiet when nothing moved, which means
+      // the only other way a record's last_verified advances is the 30-day
+      // threshold below. This is the manual "re-verify everything now" switch:
+      // after an outage, after a long scraper breakage, or to prove the data-PR
+      // path still works without waiting for a provider to change something.
+      args.refresh = true;
     } else {
       log.error("unknown argument", { arg: a });
       process.exit(2);
@@ -190,7 +198,7 @@ async function runProvider(mod, args, validate) {
     });
   }
 
-  const changed = hasChanges(diff) || stale.length > 0;
+  const changed = hasChanges(diff) || stale.length > 0 || args.refresh;
   log.info("diff", {
     provider,
     added: diff.added,
