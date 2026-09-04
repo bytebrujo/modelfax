@@ -7,6 +7,7 @@ import { diffRecords, hasChanges } from "../scrapers/lib/diff.js";
 import { fetchText } from "../scrapers/lib/fetch.js";
 import { ParseError, FetchError, EXIT } from "../scrapers/lib/errors.js";
 import { compileValidator, validateDocument, schemaVersion } from "../scrapers/lib/schema.js";
+import { aliasIndex, applyTracking } from "../scrapers/lib/tracked.js";
 
 test("mergePartials merges fields from several sources by model_id", () => {
   const merged = mergePartials([
@@ -146,4 +147,46 @@ test("ParseError serializes selector + expectation", () => {
 
 test("exit codes match the spec", () => {
   assert.deepEqual(EXIT, { NO_CHANGES: 0, CHANGES_WRITTEN: 3, PARSE_FAILURE: 4, FETCH_FAILURE: 5 });
+});
+
+test("aliasIndex maps aliases and canonical ids to the canonical id", () => {
+  const index = aliasIndex([
+    { model_id: "gpt-5", aliases: ["gpt-5-2025-08-07"] },
+    { model_id: "gpt-6-astra" },
+  ]);
+  assert.equal(index.canonical.get("gpt-5-2025-08-07"), "gpt-5");
+  assert.equal(index.canonical.get("gpt-5"), "gpt-5");
+  assert.equal(index.canonical.get("gpt-6-astra"), "gpt-6-astra");
+  assert.deepEqual([...index.ids].sort(), ["gpt-5", "gpt-6-astra"]);
+});
+
+test("aliasIndex rejects an alias claimed by two models", () => {
+  assert.throws(
+    () =>
+      aliasIndex([
+        { model_id: "a", aliases: ["x"] },
+        { model_id: "b", aliases: ["x"] },
+      ]),
+    /alias "x" maps to both/,
+  );
+});
+
+test("applyTracking rewrites aliases and reports what it dropped", () => {
+  const index = aliasIndex([{ model_id: "gpt-5", aliases: ["gpt-5-2025-08-07"] }]);
+  const { kept, untracked } = applyTracking(
+    [
+      { model_id: "gpt-5-2025-08-07", _kind: "deprecations", status: "deprecated" },
+      { model_id: "gpt-5", _kind: "pricing" },
+      { model_id: "whisper-1", _kind: "deprecations" },
+      { model_id: "gpt-9", _kind: "pricing" },
+    ],
+    index,
+  );
+  assert.deepEqual(
+    kept.map((k) => k.model_id),
+    ["gpt-5", "gpt-5"],
+  );
+  assert.equal(kept[0].status, "deprecated", "other fields survive the rewrite");
+  assert.deepEqual([...untracked.keys()].sort(), ["gpt-9", "whisper-1"]);
+  assert.deepEqual([...untracked.get("gpt-9")], ["pricing"]);
 });
