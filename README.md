@@ -7,8 +7,19 @@ published as a static site with a free JSON API.
 Upstream provider pages are re-read daily; every change lands as a reviewed pull
 request, so `git log -- data/` is the price history.
 
-- Site: `https://bytebrujo.github.io/modelfax/` (live after Phase 4)
+- Site: <https://bytebrujo.github.io/modelfax/>
 - Cost calculator: `https://bytebrujo.github.io/modelfax/calculator.html`
+
+## Try it
+
+```sh
+# every Anthropic model, with prices per million tokens
+curl -s https://bytebrujo.github.io/modelfax/data/anthropic.json | jq '.models[] | {model_id, input: .pricing.input_per_mtok, output: .pricing.output_per_mtok}'
+
+# everything retiring, across all three providers
+curl -s https://bytebrujo.github.io/modelfax/data/{openai,anthropic,google}.json \
+  | jq -s '[.[].models[]] | map(select(.dates.retired)) | sort_by(.dates.retired) | .[] | {id, retired: .dates.retired}'
+```
 
 ## JSON API
 

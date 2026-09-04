@@ -1,0 +1,31 @@
+name: Data correction
+description: A price, context window, or lifecycle date is wrong
+labels: [data]
+body:
+  - type: input
+    id: model
+    attributes:
+      label: Model id
+      description: The `model_id` as it appears in the data file, e.g. claude-opus-5
+    validations:
+      required: true
+  - type: input
+    id: field
+    attributes:
+      label: Which field is wrong
+      description: e.g. pricing.input_per_mtok, context_window, dates.retired
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Provider URL showing the correct value
+      description: Must be on the provider's own domain. This is the whole argument.
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: What it says now, and what it should say
+    validations:
+      required: true

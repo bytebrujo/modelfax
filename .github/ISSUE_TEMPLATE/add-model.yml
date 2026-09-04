@@ -1,0 +1,32 @@
+name: Add a model
+description: A model this registry does not cover yet
+labels: [data]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Coverage is curated rather than exhaustive, because context windows and
+        modalities are not published in a scrapeable table by most providers.
+        Image, video, audio and embedding models are out of scope: this registry
+        is per-token pricing only.
+  - type: input
+    id: model
+    attributes:
+      label: Model id
+      description: The exact string the provider's API accepts
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options: [openai, anthropic, google, other]
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Provider page for this model
+      description: Ideally the page listing its context window and max output.
+    validations:
+      required: true
