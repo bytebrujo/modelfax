@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Assemble _site
         run: make build-site
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
