@@ -1,6 +1,9 @@
 // Cross-file invariants (build spec §4.3).
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readdirSync } from "node:fs";
+import { join, dirname, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { listDataFiles, readDataFile } from "../scrapers/lib/schema.js";
 
 // Allowed hostnames for `sources`, per provider. Extend deliberately.
@@ -101,6 +104,38 @@ test("retired models have no pricing, priced models have positive prices", () =>
   for (const m of all) {
     if (m.pricing) {
       assert.ok(m.pricing.input_per_mtok >= 0 && m.pricing.output_per_mtok >= 0, m.id);
+    }
+  }
+});
+
+// Coverage must be a closed loop: a model named in a provider's `tracked` list
+// has to exist in data/, because context windows and modalities are not
+// scrapeable and normalize() will not invent them. Without this, adding an id
+// to `tracked` and forgetting to seed the record turns the next scrape red.
+const providersDir = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "scrapers",
+  "providers",
+);
+
+test("every tracked model has a record, and every record is tracked", async () => {
+  for (const file of readdirSync(providersDir).filter((f) => f.endsWith(".js"))) {
+    const mod = await import(pathToFileURL(join(providersDir, file)).href);
+    const recorded = new Set(all.filter((m) => m.provider === mod.provider).map((m) => m.model_id));
+    const trackedIds = new Set(mod.tracked.map((t) => t.model_id));
+
+    for (const id of trackedIds) {
+      assert.ok(
+        recorded.has(id),
+        `${mod.provider} tracks ${id} but data/${mod.provider}.json has no record`,
+      );
+    }
+    for (const id of recorded) {
+      assert.ok(
+        trackedIds.has(id),
+        `data/${mod.provider}.json records ${id} but the module does not track it`,
+      );
     }
   }
 });
