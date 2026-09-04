@@ -9,10 +9,16 @@ on:
 permissions:
   contents: read
 
+# Runner: the Namespace profile (namespace-profile-brujo), matching the rest of
+# this account's CI. Faster machines and a persistent cache. Override per-repo
+# without editing this file by setting the NAMESPACE_RUNNER Actions variable;
+# set it to ubuntu-latest to fall back to GitHub-hosted runners if Namespace is
+# unavailable.
+
 jobs:
   check:
     name: make check
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.NAMESPACE_RUNNER || 'namespace-profile-brujo' }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
