@@ -12,6 +12,11 @@ on:
   schedule:
     - cron: "0 6 * * *"
   workflow_dispatch:
+    inputs:
+      refresh:
+        description: "Re-stamp last_verified on every record even if nothing changed"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -42,7 +47,7 @@ jobs:
         id: scrape
         run: |
           set +e
-          node scrapers/run.js > scrape.log 2> scrape.err
+          node scrapers/run.js ${{ inputs.refresh && '--refresh' || '' }} > scrape.log 2> scrape.err
           code=$?
           set -e
           echo "exit=$code" >> "$GITHUB_OUTPUT"
