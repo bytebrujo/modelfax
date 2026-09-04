@@ -89,3 +89,20 @@ files themselves.
   non-ASCII digits. A parser that works locally and fails in CI on _values_
   rather than _structure_ is a fetch problem; check this before touching the
   parser.
+- 2026-09-04 — `github.run_started_at` arrives empty inside a workflow step's
+  `env:`. It produced branch names like `data/-33837114866` and a commit message
+  reading `data:` with no providers. Compute dates in the shell with
+  `date -u +%F`.
+- 2026-09-04 — Exit 3 must mean the file on disk would differ, not that some
+  flag asked for a write. A forced refresh that re-stamped `last_verified` to
+  the date already recorded produced byte-identical output, and the workflow
+  branched, found nothing to commit, and failed. `run.js` now compares the
+  serialized document against the file. Any future "force a write" switch has to
+  keep that property.
+- 2026-09-04 — Phase 2 status: the scrape workflow has been observed taking the
+  parse-failure path (opened issue #3, a real bug) and the no-change path
+  (exit 0, nothing opened). The data-PR path has not yet run to completion
+  because nothing upstream has changed since the parsers landed; the two bugs
+  above were found by executing that step and are fixed. It will fire on the
+  next genuine upstream change, or by the 30-day `last_verified` re-stamp at the
+  latest.
