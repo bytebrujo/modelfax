@@ -39,5 +39,10 @@ Notes for the next run:
 
 - The scrape workflow has been observed taking the parse-failure path (opened issue #3, a real bug) and the no-change path (exit 0). The data-PR path has not completed, because nothing upstream has changed since the parsers landed. Two bugs in that step were found by executing it and are fixed. It fires on the next genuine change, or by the 30-day last_verified re-stamp.
 - Phase 3 is verified by headless Chromium at 500px and 1280px, the narrowest the local binary allows. Verification on a real phone browser is outstanding and needs a person.
-- Phase 4 remains: submitting the registry to at least two places where potential users are. That is outward-facing and needs the owner's go-ahead.
+- Phase 4 submissions, opened with the owner's go-ahead after checking each list's own rules:
+  - public-apis/public-apis PR #7232, Machine Learning section. Their format validator reports the same 568 pre-existing errors before and after the change, and none on the added line.
+  - steven2358/awesome-generative-ai PR #1322, into DISCOVERIES.md rather than the main list, because the main list requires 1,000 followers and this project has none. That file exists for exactly this case.
+  - Two better-fitting lists were checked and deliberately not submitted to. awesome-ai-tokenomics requires an independent adoption signal, and awesome-llm-cost requires six months of public history; both auto-close mass cross-posts and review the submitting account's recent PR history. A reminder is set for 2027-03-04 to revisit.
+  - Two further lists are blocked by a rule this project cannot satisfy today: marcelscruz/public-apis and marcelscruz/dev-resources both reject github.io hosting and need a custom domain.
+  - The community post is drafted but not published; posting needs a person with the account.
 - Auto-merge for data-only PRs is scheduled for month 2 per the build spec, and graduating to it is itself a log entry.
