@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   scrape:
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.NAMESPACE_RUNNER || 'namespace-profile-brujo' }}
     timeout-minutes: 15
     env:
       GH_TOKEN: ${{ secrets.SCRAPE_PAT || secrets.GITHUB_TOKEN }}

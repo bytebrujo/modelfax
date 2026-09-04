@@ -45,3 +45,10 @@ files themselves.
   secret and falls back to `GITHUB_TOKEN`; until that secret exists, the daily
   scrape can open a PR but it will sit unmergeable. Set the secret before
   relying on the cron.
+- 2026-09-04 — CI runs on the Namespace profile `namespace-profile-brujo`, the
+  same one the rest of this account uses. Workflows read
+  `${{ vars.NAMESPACE_RUNNER || 'namespace-profile-brujo' }}`, so a repository
+  Actions variable overrides the runner without editing a workflow file. If
+  Namespace is ever unavailable, set `NAMESPACE_RUNNER` to `ubuntu-latest`
+  rather than editing the workflows. The job _name_ (`make check`) is what
+  branch protection matches on, so it must not change when the runner does.
