@@ -198,7 +198,16 @@ async function runProvider(mod, args, validate) {
     });
   }
 
-  const changed = hasChanges(diff) || stale.length > 0 || args.refresh;
+  // `changed` means the file on disk would differ, not that some flag was set.
+  // A forced refresh whose only effect is re-stamping last_verified to the date
+  // already recorded produces identical bytes, and reporting that as a change
+  // made the scrape workflow branch, find nothing to commit, and fail.
+  const serialized = JSON.stringify(nextDoc, null, 2) + "\n";
+  const current = existsSync(path) ? readFileSync(path, "utf8") : "";
+  const changed = serialized !== current;
+  if (!changed && (hasChanges(diff) || stale.length > 0 || args.refresh)) {
+    log.info("no byte-level change despite a refresh or diff signal", { provider });
+  }
   log.info("diff", {
     provider,
     added: diff.added,
@@ -211,7 +220,7 @@ async function runProvider(mod, args, validate) {
   }
 
   if (changed && !args.checkOnly) {
-    writeFileSync(path, JSON.stringify(nextDoc, null, 2) + "\n");
+    writeFileSync(path, serialized);
     log.info("wrote data file", { provider, path: basename(path), models: next.length });
   }
   return { provider, skipped: false, changed, diff, untracked: newModels };
