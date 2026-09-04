@@ -81,3 +81,11 @@ files themselves.
   nothing changed does not open a PR. To stop records looking stale anyway,
   run.js re-stamps any record older than 30 days even with no field change,
   which stays inside the 45-day staleness warning in `test/data.test.js`.
+- 2026-09-04 — Provider docs localize by geo-IP when a request sends no
+  `Accept-Language`. The first live scrape from a GitHub Actions runner read
+  Google's prices as `۱.۵۰ دلار`: table headers stayed English, so the structure
+  matched and only the values were unreadable. `scrapers/lib/fetch.js` now sends
+  `accept-language: en-US,en;q=0.9`, and `money()` says so when it sees
+  non-ASCII digits. A parser that works locally and fails in CI on _values_
+  rather than _structure_ is a fetch problem; check this before touching the
+  parser.

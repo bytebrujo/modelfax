@@ -27,7 +27,16 @@ export async function fetchText(url, opts) {
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const res = await fetchImpl(url, {
-        headers: { "user-agent": USER_AGENT, accept: "text/html,*/*" },
+        headers: {
+          "user-agent": USER_AGENT,
+          accept: "text/html,*/*",
+          // Without this, a docs site localizes by geo-IP and the page that
+          // comes back depends on where the runner happens to be. Google served
+          // a GitHub Actions runner Persian numerals for its prices
+          // ("۱.۵۰ دلار") while leaving the table headers in English, so the
+          // structure matched and only the values were unreadable.
+          "accept-language": "en-US,en;q=0.9",
+        },
         redirect: "follow",
         signal: controller.signal,
       });

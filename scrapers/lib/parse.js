@@ -75,7 +75,14 @@ export function money(text, context, expectation) {
   }
   const m = t.match(/\$\s*([0-9]+(?:\.[0-9]+)?)/);
   if (!m) {
-    fail(context, `${expectation} to be a $ amount or a dash, got ${JSON.stringify(t)}`, t);
+    // Non-ASCII digits mean the site localized the page rather than restructured
+    // it, which is a fetch problem and not a parser problem. Saying so here
+    // saves a maintainer from rewriting a parser that was never wrong.
+    const localized = /[^\u0000-\u007F]/.test(t) && !/^[-—\s]*$/.test(t);
+    const hint = localized
+      ? " (the value is not ASCII, so the provider probably served a localized page; check the accept-language header in scrapers/lib/fetch.js)"
+      : "";
+    fail(context, `${expectation} to be a $ amount or a dash, got ${JSON.stringify(t)}${hint}`, t);
   }
   return Number(m[1]);
 }

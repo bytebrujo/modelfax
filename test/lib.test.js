@@ -8,6 +8,7 @@ import { fetchText } from "../scrapers/lib/fetch.js";
 import { ParseError, FetchError, EXIT } from "../scrapers/lib/errors.js";
 import { compileValidator, validateDocument, schemaVersion } from "../scrapers/lib/schema.js";
 import { aliasIndex, applyTracking } from "../scrapers/lib/tracked.js";
+import { money } from "../scrapers/lib/parse.js";
 
 test("mergePartials merges fields from several sources by model_id", () => {
   const merged = mergePartials([
@@ -189,4 +190,27 @@ test("applyTracking rewrites aliases and reports what it dropped", () => {
   assert.equal(kept[0].status, "deprecated", "other fields survive the rewrite");
   assert.deepEqual([...untracked.keys()].sort(), ["gpt-9", "whisper-1"]);
   assert.deepEqual([...untracked.get("gpt-9")], ["pricing"]);
+});
+
+test("fetchText asks for English, so docs sites do not localize by geo-IP", async () => {
+  let seen;
+  const fetchImpl = async (_url, init) => {
+    seen = init.headers;
+    return { ok: true, status: 200, text: async () => "<html></html>" };
+  };
+  await fetchText("https://example.com/", { provider: "google", fetchImpl });
+  assert.match(seen["accept-language"], /\ben\b/);
+});
+
+test("money names localization when a price is not ASCII", () => {
+  const context = { provider: "google", sourceKind: "pricing", selector: "table" };
+  assert.throws(
+    () => money("۱.۵۰ دلار", context, "input price for gemini-3.5-flash"),
+    (e) => /localized page/.test(e.expectation) && /accept-language/.test(e.expectation),
+  );
+  // An ordinary structural surprise must not get the localization hint.
+  assert.throws(
+    () => money("see below", context, "input price"),
+    (e) => !/localized/.test(e.expectation),
+  );
 });
