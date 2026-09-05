@@ -37,7 +37,7 @@
         "https://developers.openai.com/api/docs/models/gpt-5",
         "https://developers.openai.com/api/docs/pricing"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Snapshot gpt-5-2025-08-07 announced deprecated 2026-06-11 with shutdown 2026-12-11; recommended replacement gpt-5.6-sol/terra/luna."
     },
     {
@@ -75,7 +75,7 @@
         "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
         "https://developers.openai.com/api/docs/pricing"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Prompts over 272K input tokens are billed at 2x input and 1.5x output for the full request. Batch prices are 50% of standard."
     },
     {
@@ -113,7 +113,7 @@
         "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
         "https://developers.openai.com/api/docs/pricing"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Batch prices are 50% of standard. Provider lists promotional pricing through 2026-11-21."
     },
     {
@@ -151,7 +151,7 @@
         "https://developers.openai.com/api/docs/models/gpt-5.6-terra",
         "https://developers.openai.com/api/docs/pricing"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Knowledge cutoff 2026-02-16. Prices shown are the short-context tier."
     },
     {
@@ -189,7 +189,7 @@
         "https://developers.openai.com/api/docs/models/gpt-6-astra",
         "https://developers.openai.com/api/docs/pricing"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Knowledge cutoff 2026-04-30. Prices shown are the short-context tier; requests over the short-context threshold are billed at the long-context rate."
     }
   ]
