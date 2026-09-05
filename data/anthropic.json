@@ -37,7 +37,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/fable-5/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Retirement committed not sooner than 2027-06-09. Cache reads are the usual 10% of base input, unlike Claude Fable 5.1."
     },
     {
@@ -77,7 +77,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/fable-5-1/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Retirement committed not sooner than 2027-09-01. Cache reads are 2.5% of base input on this model, not the usual 10%."
     },
     {
@@ -117,7 +117,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/haiku-4-5/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Alias claude-haiku-4-5 resolves to this snapshot. Retirement committed not sooner than 2026-10-15."
     },
     {
@@ -156,7 +156,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/opus-4-5/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Alias claude-opus-4-5 resolves to this snapshot. Retirement committed not sooner than 2026-11-24."
     },
     {
@@ -195,7 +195,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/opus-4-6/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Retirement committed not sooner than 2027-02-05."
     },
     {
@@ -234,7 +234,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/opus-4-7/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Retirement committed not sooner than 2027-04-16. First model on the current tokenizer, which produces about 30% more tokens for the same text than earlier models."
     },
     {
@@ -273,7 +273,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/opus-4-8/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Retirement committed not sooner than 2027-05-28. Supports 300K output tokens on the Batch API with a beta header."
     },
     {
@@ -313,7 +313,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/opus-5/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Retirement committed not sooner than 2027-07-24. cached_input_per_mtok is the cache-read (hit) price; 5m/1h cache writes cost 1.25x/2x base input."
     },
     {
@@ -352,7 +352,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/sonnet-4-5/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Alias claude-sonnet-4-5 resolves to this snapshot. Retirement committed not sooner than 2026-09-29."
     },
     {
@@ -391,7 +391,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/sonnet-4-6/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Legacy. Retirement committed not sooner than 2027-02-17."
     },
     {
@@ -431,7 +431,7 @@
         "https://platform.claude.com/docs/en/about-claude/pricing",
         "https://platform.claude.com/docs/en/models/sonnet-5/overview"
       ],
-      "last_verified": "2026-09-04",
+      "last_verified": "2026-09-05",
       "notes": "Retirement committed not sooner than 2027-06-30. Introductory $2/$10 pricing was made permanent; the planned 2026-09-01 increase was cancelled."
     }
   ]
